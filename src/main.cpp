@@ -5,6 +5,7 @@
 #include "hoermann.h"
 
 
+
 int d = 1; 
 unsigned long previousMillis = 0;  
 unsigned long previousMillis2 = 0;  
@@ -23,40 +24,39 @@ void callback(char* topic, byte* payload, unsigned int length)
         st +=(char)payload[i];
     }
     Serial.println();
-
     
-    if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/set/debug") == 0)  
+    if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/debug") == 0)  
     {   
         hoermann.enable_debug(atoi((char *)payload));
     } 
 
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/set/door") == 0)  
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/gate") == 0)  
     {   
         Serial.println(st);
         hoermann.set_state(st);
     } 
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/set/venting") == 0)  
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/walk_in") == 0)  
     {   
         Serial.println(st);
         hoermann.set_state(st);
     } 
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/set/delay_msg") == 0)  
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/delay_msg") == 0)  
     {   
         Serial.print("delay_msg: ");
         Serial.println(st);
         hoermann.set_delay(st.toInt());
     } 
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/set/light") == 0)  
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/light") == 0)  
     {   
         if (st == "ON" || st == "OFF")
             hoermann.set_state("light");
     }
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/esp_led") == 0 && (char)payload[0] == '1') 
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/esp_led") == 0 && (char)payload[0] == '1') 
     {
         Serial.println("BUILTIN_LED_low");
         digitalWrite(BUILTIN_LED, LOW);   
     } 
-    else if (strcmp(topic,"avshrs/devices/hormann_garage_door_01/esp_led") == 0 && (char)payload[0] == '0') 
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/esp_led") == 0 && (char)payload[0] == '0') 
     {
         Serial.println("BUILTIN_LED_high");
         digitalWrite(BUILTIN_LED, HIGH); 
@@ -84,7 +84,7 @@ void setup()
     client.setCallback(callback);
 }
 
-void door_position(boolean force)
+void gate_position(boolean force)
 {
     if (state != hoermann.get_state() || force ) 
     {
@@ -92,24 +92,24 @@ void door_position(boolean force)
         
         if (hoermann.get_state() == "open")
         {
-            client.publish("avshrs/devices/hormann_garage_door_01/state/door", "100");
-            client.publish("avshrs/devices/hormann_garage_door_01/state/state", "open");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "100");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", "open");
         }
         else if (hoermann.get_state() == "closed")
         {
-            client.publish("avshrs/devices/hormann_garage_door_01/state/door", "0");
-            client.publish("avshrs/devices/hormann_garage_door_01/state/venting", "0");
-            client.publish("avshrs/devices/hormann_garage_door_01/state/state", "closed");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "0");
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "OFF");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", "closed");
         }
-        else if (hoermann.get_state() == "venting")
+        else if (hoermann.get_state() == "walk_in")
         {
-            client.publish("avshrs/devices/hormann_garage_door_01/state/door", "10");
-            client.publish("avshrs/devices/hormann_garage_door_01/state/venting", "10");
-            client.publish("avshrs/devices/hormann_garage_door_01/state/state", "venting");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "10");
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", "walk_in");
         }
         else
         {
-            client.publish("avshrs/devices/hormann_garage_door_01/state/door", "error");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "error");
         }
     }
 }
@@ -132,26 +132,26 @@ void loop()
         wifi_status();
 
         snprintf (msg, MSG_BUFFER_SIZE, "true");
-        client.publish("avshrs/devices/hormann_garage_door_01/status/connected", msg);
+        client.publish("avshrs/devices/hormann_gate_01/status/connected", msg);
 
-        client.publish("avshrs/devices/hormann_garage_door_01/status/master_sending_broadcast", hoermann.is_broadcast_recv().c_str());
+        client.publish("avshrs/devices/hormann_gate_01/status/master_sending_broadcast", hoermann.is_broadcast_recv().c_str());
         hoermann.reset_broadcast();
 
-        client.publish("avshrs/devices/hormann_garage_door_01/status/master_is_scanning", hoermann.is_scanning().c_str());
+        client.publish("avshrs/devices/hormann_gate_01/status/master_is_scanning", hoermann.is_scanning().c_str());
         hoermann.reset_scanning();
 
-        client.publish("avshrs/devices/hormann_garage_door_01/status/response_to_master", hoermann.is_connected().c_str());
+        client.publish("avshrs/devices/hormann_gate_01/status/response_to_master", hoermann.is_connected().c_str());
         hoermann.reset_connected();
 
         snprintf (msg, MSG_BUFFER_SIZE, "%i", hoermann.get_scan_resp_time());
-        client.publish("avshrs/devices/hormann_garage_door_01/status/scan_resp_time", msg);
+        client.publish("avshrs/devices/hormann_gate_01/status/scan_resp_time", msg);
         
         snprintf (msg, MSG_BUFFER_SIZE, "%i", hoermann.get_req_resp_time());
-        client.publish("avshrs/devices/hormann_garage_door_01/status/req_resp_time", msg);
-        client.publish("avshrs/devices/hormann_garage_door_01/state/light", "OFF");
-        door_position(true);        
+        client.publish("avshrs/devices/hormann_gate_01/status/req_resp_time", msg);
+        client.publish("avshrs/devices/hormann_gate_01/state/light", "OFF");
+        gate_position(true);        
     }
     
-    door_position(false);        
+    gate_position(false);        
     
 }

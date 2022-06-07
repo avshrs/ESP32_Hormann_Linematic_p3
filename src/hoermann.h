@@ -19,9 +19,17 @@ class Mqtt_Client;
 #define RESPONSE_DEFAULT          0x00
 #define RESPONSE_STOP             0xff
 #define RESPONSE_OPEN             0x01
-#define RESPONSE_CLOSE            0x02
-#define RESPONSE_VENTING          0x10
-#define RESPONSE_TOGGLE_LIGHT     0x08
+#define RESPONSE_CLOSED           0x02
+#define RESPONSE_WALK_IN_VENT     0x10
+#define RESPONSE_MOTOR_STATE      0x40
+#define RESPONSE_MOTOR_DIRECTION  0x20
+
+#define SEND_STOP                 0xff
+#define SEND_OPEN                 0x01
+#define SEND_CLOSE                0x02
+#define SEND_TOGGLE               0x04
+#define SEND_WALK_IN_VENT         0x10
+#define SEND_TOGGLE_LIGHT         0x08
 
 #define CRC8_INITIAL_VALUE        0xF3
 

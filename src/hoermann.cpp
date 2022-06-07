@@ -379,89 +379,76 @@ void Hoermann::make_status_req_msg(RX_Buffer &rx_buf, TX_Buffer &tx_buf)
 
 String Hoermann::get_state()
 {
-    if ((broadcast_status) == 0x00)
+    if ((broadcast_status) == RESPONSE_DEFAULT)
     {
-        String stat = "venting";
+        String stat = "walk_in";
         return stat;
     }
-    else if ((broadcast_status) == 0x02)
+    else if ((broadcast_status) == RESPONSE_WALK_IN_VENT)
+    {
+        String stat = "walk_in";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_CLOSED)
     {
         String stat = "closed";
         return stat;
     }
-    else if ((broadcast_status) == 0x01)
+    else if ((broadcast_status) == RESPONSE_OPEN)
     {
         String stat = "open";
         return stat;
     }
+    else if ((broadcast_status) == RESPONSE_MOTOR_STATE)
+    {
+        String stat = "motor_state";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_MOTOR_DIRECTION)
+    {
+        String stat = "motor_direction";
+        return stat;
+    }    
     else
     {
         String stat = "error";
         return stat;
     }
 }
-// String Hoermann::get_state()
-// {
-//   if ((broadcast_status & 0x01) == 0x01)
-//   {
-//     return cfg->get_stopped_string();
-//   }
-//   else if ((broadcast_status & 0x02) == 0x02)
-//   {
-//     return cfg->get_open_string();
-//   }
-//   else if ((broadcast_status & 0x80) == 0x80)
-//   {
-//     return cfg->get_closed_string();
-//   }
-//   else if ((broadcast_status & 0x60) == 0x40)
-//   {
-//     return  cfg->get_venting_string();
-//   }
-//   else if ((broadcast_status & 0x60) == 0x60)
-//   {
-//     return  cfg->get_opening_string();
-//   }
-//   else if ((broadcast_status & 0x10) == 0x10)
-//   {
-//     return cfg->get_closing_string();
-//   }
-//   else if (broadcast_status == 0x00)
-//   {
-//     return cfg->get_error_string();
-//   }
-//   else
-//     return cfg->get_offline_string();
-
-// }
 
 void Hoermann::set_state(String action)
 {
     if (action == "stop" || action == "STOP")
     {
-        slave_respone_data = RESPONSE_STOP;
+        slave_respone_data = SEND_STOP;
         Serial.println("stop");
     }
     else if (action == "open" || action == "OPEN")
     {
-        slave_respone_data = RESPONSE_OPEN;
+        slave_respone_data = SEND_OPEN;
         Serial.println("open");
     }
     else if (action == "close" || action == "CLOSE")
     {
-        slave_respone_data = RESPONSE_CLOSE;
+        slave_respone_data = SEND_CLOSE;
         Serial.println("close");
     }
-    else if (action == "venting" || action == "VENTING")
+    else if (action == "toggle" || action == "TOGGLE")
     {
-        slave_respone_data = RESPONSE_VENTING;
-        Serial.println("venting");
+        slave_respone_data = SEND_TOGGLE;
+        Serial.println("toggle");
+    }
+    else if (action == "walk_in" || action == "WALK_IN")
+    {
+        slave_respone_data = SEND_WALK_IN_VENT;
+        Serial.println("walk_in");
     }
     else if (action == "light" || action == "LIGHT")
     {
-        slave_respone_data = RESPONSE_TOGGLE_LIGHT;
+        slave_respone_data = SEND_TOGGLE_LIGHT;
         Serial.println("light");
     }
+
 }
 
 uint8_t Hoermann::calc_crc8(uint8_t *p_data, uint8_t len)
