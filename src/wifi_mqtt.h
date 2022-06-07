@@ -39,7 +39,7 @@ void prepare_conf()
     client.publish("homeassistant/cover/hormann_gate_main_01/config", s1_.c_str(), true);
 
 
-    String s2 = "\"command_topic\":\"~/set/walk_in\",\"position_topic\":\"~/state/walk_in\",\"device_class\":\"gate\",\"payload_open\":\"walk_in\",\"payload_open\":\"close\",\"payload_stop\":\"stop\"}";
+    String s2 = "\"command_topic\":\"~/set/walk_in\",\"position_topic\":\"~/state/gate\",\"device_class\":\"gate\",\"payload_open\":\"walk_in\",\"payload_close\":\"close\",\"payload_stop\":\"stop\"}";
     String s2_ = make_discover("cover", "hormann_gate_01", "Linematic-01", "Gate Walk In", "hormann_gate_walk_in_01",s2);
     client.publish("homeassistant/cover/hormann_gate_walk_in_01/config", s2_.c_str(), true);
 

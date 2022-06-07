@@ -415,6 +415,12 @@ String Hoermann::get_state()
         return stat;
     }
 }
+String Hoermann::get_state_hex()
+{
+    uint8_t buf[1] = {(uint8_t)broadcast_status}; 
+    String status = buffer_to_string(buf, 1);
+    return status;
+}
 
 void Hoermann::set_state(String action)
 {

@@ -109,8 +109,10 @@ void gate_position(boolean force)
         }
         else
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "error");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", hoermann.get_state().c_str());
         }
+        String data = "hex state: " + hoermann.get_state_hex();
+        client.publish("avshrs/devices/hormann_gate_01/status/gate", data.c_str());
     }
 }
 

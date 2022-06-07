@@ -95,6 +95,7 @@ class Hoermann{
         String is_broadcast_recv();         
         void reset_broadcast();        
         String get_state();
+        String get_state_hex();
         void set_state(String action);
         int get_scan_resp_time();
         int set_delay(int delay);
