@@ -5,6 +5,7 @@
 #include <chrono>
 
 
+
 class Mqtt_Client;
 #define BROADCAST_ADDR            0x00
 #define MASTER_ADDR               0x80
@@ -20,28 +21,29 @@ class Mqtt_Client;
 #define RESPONSE_STOP             0xff
 #define RESPONSE_OPEN             0x01
 #define RESPONSE_CLOSED           0x02
-#define RESPONSE_WALK_IN_VENT     0x10
-#define RESPONSE_MOTOR_STATE      0x40
-#define RESPONSE_MOTOR_DIRECTION  0x20
+#define RESPONSE_WALK_IN          0x80
+#define RESPONSE_OPENING          0x40
+#define RESPONSE_CLOSING          0x60
 
 #define SEND_STOP                 0xff
 #define SEND_OPEN                 0x01
 #define SEND_CLOSE                0x02
 #define SEND_TOGGLE               0x04
-#define SEND_WALK_IN_VENT         0x10
+#define SEND_WALK_IN              0x10
 #define SEND_TOGGLE_LIGHT         0x08
 
 #define CRC8_INITIAL_VALUE        0xF3
 
+
 // Status mask for LineaMatic P:
 // +------- (0x80) Unknown
-//  +------ (0x40) Motor running: 1 == running. 0 == stopped.
-//   +----- (0x20) Motor direction: 1 == closing. 0 == opening.
+//  +------ (0x60) Closing
+//   +----- (0x40) Opening
 //    +---- (0x10) Unknown
 //     +--- (0x08) Unknown
 //      +-- (0x04) Unknown
 //       +- (0x02) Fully closed 
-//        + (0x01) Fully open
+//        + (open) Fully open
 
 
 // Command mask for LineaMatic P:
@@ -55,6 +57,7 @@ class Mqtt_Client;
 //        + (0x01) Impulse open
 //           0x00  default
 // For some reason the second byte needs to be 0x10 (signals no error?)
+
 
 
 class Hoermann{

@@ -381,17 +381,7 @@ String Hoermann::get_state()
 {
     if ((broadcast_status) == RESPONSE_DEFAULT)
     {
-        String stat = "walk_in";
-        return stat;
-    }
-    else if ((broadcast_status) == RESPONSE_WALK_IN_VENT)
-    {
-        String stat = "walk_in";
-        return stat;
-    }
-    else if ((broadcast_status) == RESPONSE_CLOSED)
-    {
-        String stat = "closed";
+        String stat = "default";
         return stat;
     }
     else if ((broadcast_status) == RESPONSE_OPEN)
@@ -399,14 +389,24 @@ String Hoermann::get_state()
         String stat = "open";
         return stat;
     }
-    else if ((broadcast_status) == RESPONSE_MOTOR_STATE)
+    else if ((broadcast_status) == RESPONSE_CLOSED)
     {
-        String stat = "motor_state";
+        String stat = "closed";
         return stat;
     }
-    else if ((broadcast_status) == RESPONSE_MOTOR_DIRECTION)
+    else if ((broadcast_status) == RESPONSE_WALK_IN)
     {
-        String stat = "motor_direction";
+        String stat = "walk_in";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_OPENING)
+    {
+        String stat = "opening";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_CLOSING)
+    {
+        String stat = "closing";
         return stat;
     }    
     else
@@ -446,7 +446,7 @@ void Hoermann::set_state(String action)
     }
     else if (action == "walk_in" || action == "WALK_IN")
     {
-        slave_respone_data = SEND_WALK_IN_VENT;
+        slave_respone_data = SEND_WALK_IN;
         Serial.println("walk_in");
     }
     else if (action == "light" || action == "LIGHT")

@@ -48,8 +48,7 @@ void callback(char* topic, byte* payload, unsigned int length)
     } 
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/light") == 0)  
     {   
-        if (st == "ON" || st == "OFF")
-            hoermann.set_state("light");
+        hoermann.set_state("light");
     }
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/esp_led") == 0 && (char)payload[0] == '1') 
     {
@@ -90,20 +89,33 @@ void gate_position(boolean force)
     {
         state = hoermann.get_state();
         
-        if (hoermann.get_state() == "open")
+        if (state == "open")
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "100");
-            client.publish("avshrs/devices/hormann_gate_01/state/state", "open");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
         }
-        else if (hoermann.get_state() == "closed")
+        else if (state == "opening")
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "0");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
+        }
+        else if (state == "closed")
+        {
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "OFF");
-            client.publish("avshrs/devices/hormann_gate_01/state/state", "closed");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
         }
-        else if (hoermann.get_state() == "walk_in")
+        else if (state == "closing")
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "10");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
+        }
+        else if (state == "walk_in")
+        {
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "opening");
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
             client.publish("avshrs/devices/hormann_gate_01/state/state", "walk_in");
         }

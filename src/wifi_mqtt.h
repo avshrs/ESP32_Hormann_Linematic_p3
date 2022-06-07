@@ -34,17 +34,11 @@ return md;
 
 void prepare_conf()
 {
-    String s1 = "\"command_topic\":\"~/set/gate\",\"position_topic\":\"~/state/gate\",\"device_class\":\"gate\"}";
+    String s1 = "\"command_topic\":\"~/set/gate\",\"state_topic\":\"~/state/gate\",\"device_class\":\"gate\"}";
     String s1_ = make_discover("cover", "hormann_gate_01", "Linematic-01", "Gate Main", "hormann_gate_main_01",s1);
     client.publish("homeassistant/cover/hormann_gate_main_01/config", s1_.c_str(), true);
 
-
-    String s2 = "\"command_topic\":\"~/set/walk_in\",\"position_topic\":\"~/state/gate\",\"device_class\":\"gate\",\"payload_open\":\"walk_in\",\"payload_close\":\"close\",\"payload_stop\":\"stop\"}";
-    String s2_ = make_discover("cover", "hormann_gate_01", "Linematic-01", "Gate Walk In", "hormann_gate_walk_in_01",s2);
-    client.publish("homeassistant/cover/hormann_gate_walk_in_01/config", s2_.c_str(), true);
-
-
-    String s5 = "\"command_topic\":\"~/set/walk_in\",\"state_topic\":\"~/state/walk_in\",\"payload_on\":\"walk_in\",\"payload_off\":\"close\",\" state_on\":\"walk_in\",\" state_off\":\"closed\"}";
+    String s5 = "\"command_topic\":\"~/set/walk_in\",\"state_topic\":\"~/state/walk_in\",\"payload_on\":\"walk_in\",\"payload_off\":\"close\",\" state_on\":\"ON\",\" state_off\":\"OFF\"}";
     String s5_ = make_discover("switch", "hormann_gate_01", "Linematic-01", "Gate Walk In", "hormann_gate_walk_in_button_01",s5);
     client.publish("homeassistant/switch/hormann_gate_walk_in_switch_01/config", s5_.c_str(), true);
 
@@ -52,7 +46,7 @@ void prepare_conf()
     String s3_ = make_discover("sensor", "hormann_gate_01", "Linematic-01", "Gate State", "hormann_gate_state_01",s3);
     client.publish("homeassistant/sensor/hormann_gate_state_01/config", s3_.c_str(), true);
 
-    String s4 = "\"command_topic\":\"~/set/light\",\" payload_press\":\"~/state/light\",\"device_class\":\"light\"}";
+    String s4 = "\"command_topic\":\"~/set/light\",\" payload_press\":\"light\"}";
     String s4_ = make_discover("button", "hormann_gate_01", "Linematic-01", "Gate Light", "hormann_gate_light_01",s4);
     client.publish("homeassistant/button/hormann_gate_light_01/config", s4_.c_str(), true);
 }
