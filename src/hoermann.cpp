@@ -427,32 +427,26 @@ void Hoermann::set_state(String action)
     if (action == "stop" || action == "STOP")
     {
         slave_respone_data = SEND_STOP;
-        Serial.println("stop");
     }
     else if (action == "open" || action == "OPEN")
     {
         slave_respone_data = SEND_OPEN;
-        Serial.println("open");
     }
     else if (action == "close" || action == "CLOSE")
     {
         slave_respone_data = SEND_CLOSE;
-        Serial.println("close");
     }
     else if (action == "toggle" || action == "TOGGLE")
     {
         slave_respone_data = SEND_TOGGLE;
-        Serial.println("toggle");
     }
     else if (action == "walk_in" || action == "WALK_IN")
     {
         slave_respone_data = SEND_WALK_IN;
-        Serial.println("walk_in");
     }
     else if (action == "light" || action == "LIGHT")
     {
         slave_respone_data = SEND_TOGGLE_LIGHT;
-        Serial.println("light");
     }
 
 }
@@ -481,27 +475,27 @@ uint8_t Hoermann::calc_crc8(uint8_t *p_data, uint8_t len)
     return (crc);
 }
 
-void Hoermann::door_open()
+void Hoermann::gate_open()
 {
     set_state("open");
 }
 
-void Hoermann::door_close()
+void Hoermann::gate_close()
 {
     set_state("close");
 }
 
-void Hoermann::door_venting()
+void Hoermann::gate_walk_in()
 {
-    set_state("venting");
+    set_state("walk_in");
 }
 
-void Hoermann::door_toggle_light()
+void Hoermann::gate_toggle_light()
 {
     set_state("light");
 }
 
-void Hoermann::door_stop()
+void Hoermann::gate_stop()
 {
     set_state("stop");
 }

@@ -25,31 +25,45 @@ void callback(char* topic, byte* payload, unsigned int length)
     }
     Serial.println();
     
-    if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/debug") == 0)  
+    if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/gate") == 0)  
     {   
-        hoermann.enable_debug(atoi((char *)payload));
-    } 
-
-    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/gate") == 0)  
-    {   
-        Serial.println(st);
-        hoermann.set_state(st);
-    } 
+        if (st == "open" || st == "OPEN")
+        {
+            hoermann.gate_open();
+        }
+        else if (st == "close" || st == "CLOSE")
+        {
+            hoermann.gate_close();
+        }    } 
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/walk_in") == 0)  
     {   
-        Serial.println(st);
-        hoermann.set_state(st);
+        if (st == "walk_in" || st == "WALK_IN")
+        {
+            hoermann.gate_walk_in();
+        }
+        else if (st == "close" || st == "CLOSE")
+        {
+            hoermann.gate_close();
+        }
     } 
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/light") == 0)  
+    {   
+        if (st == "PRESS" )
+        {
+            hoermann.gate_toggle_light();
+        }   
+    }    
+    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/debug") == 0)  
+    {   
+        hoermann.enable_debug(atoi((char *)payload));
+    }
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/delay_msg") == 0)  
     {   
         Serial.print("delay_msg: ");
         Serial.println(st);
         hoermann.set_delay(st.toInt());
     } 
-    else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/light") == 0)  
-    {   
-        hoermann.set_state("light");
-    }
+
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/esp_led") == 0 && (char)payload[0] == '1') 
     {
         Serial.println("BUILTIN_LED_low");
@@ -165,7 +179,11 @@ void loop()
         client.publish("avshrs/devices/hormann_gate_01/state/light", "OFF");
         gate_position(true);        
     }
-    
+    if (currentMillis - previousMillis2 >= 600000) 
+    {
+        previousMillis2 = currentMillis;
+        prepare_conf();
+    }
     gate_position(false);        
     
 }

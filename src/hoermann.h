@@ -86,11 +86,11 @@ class Hoermann{
     
         void init( int tx_pin);
         void run_loop(void);
-        void door_open();
-        void door_close();
-        void door_venting();
-        void door_toggle_light();
-        void door_stop();
+        void gate_open();
+        void gate_close();
+        void gate_walk_in();
+        void gate_toggle_light();
+        void gate_stop();
         String is_connected();        
         void reset_connected();       
         String is_scanning();        
