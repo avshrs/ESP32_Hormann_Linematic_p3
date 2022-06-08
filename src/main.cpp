@@ -27,21 +27,21 @@ void callback(char* topic, byte* payload, unsigned int length)
     
     if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/gate") == 0)  
     {   
-        if (st == "open" || st == "OPEN")
+        if (st == "open" || st == "OPEN" || st == "ON")
         {
             hoermann.gate_open();
         }
-        else if (st == "close" || st == "CLOSE")
+        else if (st == "close" || st == "CLOSE" || st == "OFF" )
         {
             hoermann.gate_close();
         }    } 
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/walk_in") == 0)  
     {   
-        if (st == "walk_in" || st == "WALK_IN")
+        if (st == "walk_in" || st == "WALK_IN"|| st == "ON" )
         {
             hoermann.gate_walk_in();
         }
-        else if (st == "close" || st == "CLOSE")
+        else if (st == "close" || st == "CLOSE" || st == "OFF" )
         {
             hoermann.gate_close();
         }
@@ -124,12 +124,18 @@ void gate_position(boolean force)
         else if (state == "closing")
         {
             client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
-            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "OFF");
             client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
         }
         else if (state == "walk_in")
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "opening");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", "walk_in");
+        }
+        else if (state == "closing_error")
+        {
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
             client.publish("avshrs/devices/hormann_gate_01/state/state", "walk_in");
         }

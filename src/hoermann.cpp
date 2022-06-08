@@ -394,6 +394,11 @@ String Hoermann::get_state()
         String stat = "closed";
         return stat;
     }
+    else if ((broadcast_status) == RESPONSE_STOP)
+    {
+        String stat = "stoped";
+        return stat;
+    }
     else if ((broadcast_status) == RESPONSE_WALK_IN)
     {
         String stat = "walk_in";
@@ -408,12 +413,18 @@ String Hoermann::get_state()
     {
         String stat = "closing";
         return stat;
+    }  
+    else if ((broadcast_status) == RESPONSE_CLOSING_ERROR)
+    {
+        String stat = "closing_error";
+        return stat;
     }    
     else
     {
         String stat = "error";
         return stat;
     }
+    
 }
 String Hoermann::get_state_hex()
 {

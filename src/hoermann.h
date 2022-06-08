@@ -18,12 +18,13 @@ class Mqtt_Client;
 #define CMD_SLAVE_STATUS_RESPONSE 0x29
 // Supramatic e3
 #define RESPONSE_DEFAULT          0x00
-#define RESPONSE_STOP             0xff
+#define RESPONSE_STOP             0x50
 #define RESPONSE_OPEN             0x01
 #define RESPONSE_CLOSED           0x02
 #define RESPONSE_WALK_IN          0x80
 #define RESPONSE_OPENING          0x40
 #define RESPONSE_CLOSING          0x60
+#define RESPONSE_CLOSING_ERROR    0x10
 
 #define SEND_STOP                 0xff
 #define SEND_OPEN                 0x01

@@ -38,7 +38,7 @@ void prepare_conf()
     String s1_ = make_discover("cover", "hormann_gate_01", "Linematic-01", "Gate Main", "hormann_gate_main_01",s1);
     client.publish("homeassistant/cover/hormann_gate_main_01/config", s1_.c_str(), true);
 
-    String s5 = "\"command_topic\":\"~/set/walk_in\",\"state_topic\":\"~/state/walk_in\",\"payload_on\":\"walk_in\",\"payload_off\":\"close\",\" state_on\":\"ON\",\" state_off\":\"OFF\"}";
+    String s5 = "\"command_topic\":\"~/set/walk_in\",\"state_topic\":\"~/state/walk_in\",\"payload_on\":\"walk_in\",\"payload_off\":\"close\",\"state_on\":\"ON\",\"state_off\":\"OFF\"}";
     String s5_ = make_discover("switch", "hormann_gate_01", "Linematic-01", "Gate Walk In", "hormann_gate_walk_in_button_01",s5);
     client.publish("homeassistant/switch/hormann_gate_walk_in_switch_01/config", s5_.c_str(), true);
 
