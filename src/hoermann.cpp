@@ -355,7 +355,7 @@ void Hoermann::make_status_req_msg(RX_Buffer &rx_buf, TX_Buffer &tx_buf)
     tx_buf.buf[1] = 0x03 | get_counter(rx_buf);
 
     tx_buf.buf[2] = CMD_SLAVE_STATUS_RESPONSE;
-    if (slave_respone_data == RESPONSE_STOP)
+    if (slave_respone_data == SEND_STOP)
     {
         tx_buf.buf[3] = 0x00;
         tx_buf.buf[4] = 0x00;
@@ -365,12 +365,7 @@ void Hoermann::make_status_req_msg(RX_Buffer &rx_buf, TX_Buffer &tx_buf)
         tx_buf.buf[3] = static_cast<uint8_t>(slave_respone_data);
         tx_buf.buf[4] = 0x10;
     }
-    // if (req_resp_counter > 0)
-    // {z
-        slave_respone_data = RESPONSE_DEFAULT;
-    //     req_resp_counter = 0;
-    // }
-    // req_resp_counter++;
+    slave_respone_data = RESPONSE_DEFAULT;
     tx_buf.buf[5] = calc_crc8(tx_buf.buf, 5);
     tx_buf.timeout = 1;
     tx_buf.size = 6;
@@ -394,16 +389,6 @@ String Hoermann::get_state()
         String stat = "closed";
         return stat;
     }
-    else if ((broadcast_status) == RESPONSE_STOP)
-    {
-        String stat = "stoped";
-        return stat;
-    }
-    else if ((broadcast_status) == RESPONSE_WALK_IN)
-    {
-        String stat = "walk_in";
-        return stat;
-    }
     else if ((broadcast_status) == RESPONSE_OPENING)
     {
         String stat = "opening";
@@ -414,6 +399,26 @@ String Hoermann::get_state()
         String stat = "closing";
         return stat;
     }  
+    else if ((broadcast_status) == RESPONSE_STOP) // stoped ?????????
+    {
+        String stat = "stoped";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_WALK_IN)
+    {
+        String stat = "walk_in";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_OPTIONAL_RELAY)
+    {
+        String stat = "optional_relay";
+        return stat;
+    }
+    else if ((broadcast_status) == RESPONSE_LIGHT_RELAY)
+    {
+        String stat = "light_relay";
+        return stat;
+    }
     else if ((broadcast_status) == RESPONSE_CLOSING_ERROR)
     {
         String stat = "closing_error";

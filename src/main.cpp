@@ -34,7 +34,20 @@ void callback(char* topic, byte* payload, unsigned int length)
         else if (st == "close" || st == "CLOSE" || st == "OFF" )
         {
             hoermann.gate_close();
-        }    } 
+        }
+        else if (st == "stop" || st == "STOP"  )
+        {
+            hoermann.gate_stop();
+        }    
+        else if (st == "walk_in" || st == "WALK_IN"  )
+        {
+            hoermann.gate_walk_in();
+        } 
+        else if (st == "press" || st == "PRESS"  )
+        {
+            hoermann.gate_toggle_light();
+        }  
+    } 
     else if (strcmp(topic,"avshrs/devices/hormann_gate_01/set/walk_in") == 0)  
     {   
         if (st == "walk_in" || st == "WALK_IN"|| st == "ON" )
@@ -95,6 +108,8 @@ void setup()
     client.setServer(mqtt_server, 1883);
     client.setBufferSize(1024);
     client.setCallback(callback);
+    reconnect();
+    prepare_conf();
 }
 
 void gate_position(boolean force)
@@ -127,6 +142,12 @@ void gate_position(boolean force)
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "OFF");
             client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
         }
+        else if (state == "stoped")
+        {
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
+            client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "on");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
+        }
         else if (state == "walk_in")
         {
             client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
@@ -137,7 +158,7 @@ void gate_position(boolean force)
         {
             client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "ON");
-            client.publish("avshrs/devices/hormann_gate_01/state/state", "walk_in");
+            client.publish("avshrs/devices/hormann_gate_01/state/state", "closing_error");
         }
         else
         {
@@ -185,11 +206,7 @@ void loop()
         client.publish("avshrs/devices/hormann_gate_01/state/light", "OFF");
         gate_position(true);        
     }
-    if (currentMillis - previousMillis2 >= 600000) 
-    {
-        previousMillis2 = currentMillis;
-        prepare_conf();
-    }
+
     gate_position(false);        
     
 }

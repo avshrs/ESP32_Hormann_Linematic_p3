@@ -18,33 +18,38 @@ class Mqtt_Client;
 #define CMD_SLAVE_STATUS_RESPONSE 0x29
 // Supramatic e3
 #define RESPONSE_DEFAULT          0x00
-#define RESPONSE_STOP             0x50
-#define RESPONSE_OPEN             0x01
-#define RESPONSE_CLOSED           0x02
-#define RESPONSE_WALK_IN          0x80
-#define RESPONSE_OPENING          0x40
-#define RESPONSE_CLOSING          0x60
-#define RESPONSE_CLOSING_ERROR    0x10
+#define RESPONSE_STOP             0x00
 
-#define SEND_STOP                 0xff
-#define SEND_OPEN                 0x01
-#define SEND_CLOSE                0x02
-#define SEND_TOGGLE               0x04
-#define SEND_WALK_IN              0x10
-#define SEND_TOGGLE_LIGHT         0x08
+#define RESPONSE_OPEN             0x01  //B 0000 0001
+#define RESPONSE_CLOSED           0x02  //B 0000 0010 
+#define RESPONSE_OPTIONAL_RELAY   0x04  //B 0000 0100
+#define RESPONSE_LIGHT_RELAY      0x08  //B 0000 1000
+#define RESPONSE_CLOSING_ERROR    0x10  //B 0001 0000
+#define RESPONSE_OPENING          0x40  //B 0100 0000
+#define RESPONSE_CLOSING          0x60  //B 0110 0000
+#define RESPONSE_WALK_IN          0x80  //B 1000 0000 
+
+
+#define SEND_STOP                 0xff  // second byte to 0x00 from
+#define SEND_OPEN                 0x01  //B 0000 0001
+#define SEND_CLOSE                0x02  //B 0000 0010 
+#define SEND_TOGGLE               0x04  //B 0000 0100
+#define SEND_TOGGLE_LIGHT         0x08  //B 0000 1000
+#define SEND_WALK_IN              0x10  //B 0001 0000
+
 
 #define CRC8_INITIAL_VALUE        0xF3
 
 
 // Status mask for LineaMatic P:
-// +------- (0x80) Unknown
+// +------- (0x80) Walk_in H mode
 //  +------ (0x60) Closing
 //   +----- (0x40) Opening
-//    +---- (0x10) Unknown
-//     +--- (0x08) Unknown
-//      +-- (0x04) Unknown
+//    +---- (0x10) Error pending
+//     +--- (0x08) light
+//      +-- (0x04) relay
 //       +- (0x02) Fully closed 
-//        + (open) Fully open
+//        + (0x01) Fully open
 
 
 // Command mask for LineaMatic P:
@@ -52,7 +57,7 @@ class Mqtt_Client;
 //  +------ (0x40) Unknown
 //   +----- (0x20) Unknown
 //    +---- (0x10) Moves to 'H' (whatever that means)
-//     +--- (0x08) Unknown
+//     +--- (0x08) toggle light
 //      +-- (0x04) Impulse toggle
 //       +- (0x02) Impulse close
 //        + (0x01) Impulse open
