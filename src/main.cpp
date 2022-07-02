@@ -144,7 +144,7 @@ void gate_position(boolean force)
         }
         else if (state == "stoped")
         {
-            client.publish("avshrs/devices/hormann_gate_01/state/gate", "open");
+            client.publish("avshrs/devices/hormann_gate_01/state/gate", state.c_str());
             client.publish("avshrs/devices/hormann_gate_01/state/walk_in", "on");
             client.publish("avshrs/devices/hormann_gate_01/state/state", state.c_str());
         }
@@ -173,15 +173,18 @@ void loop()
 {
     currentMillis = millis();
 
-    if (!client.connected()) 
-    {
-        reconnect();
-    }
+
     client.loop();
     hoermann.run_loop();
     
     if (currentMillis - previousMillis >= 60000) 
     {
+        wifi_fast_reconnect();
+        
+        if (!client.connected()) 
+        {
+            reconnect();
+        }
         previousMillis = currentMillis;
 
         wifi_status();

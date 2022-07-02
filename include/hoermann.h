@@ -71,7 +71,6 @@ class Hoermann{
         SerialW ser;
 
     private:
-        
         unsigned long previousMillis = 0;  
         uint8_t slave_respone_data = RESPONSE_DEFAULT;
         uint8_t master_address = 0x80;

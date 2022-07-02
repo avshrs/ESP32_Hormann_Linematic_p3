@@ -21,7 +21,7 @@ unsigned long old_mils = 60000;
 
 
 
-String make_discover(char* dev_type_, char* dev_name_, char *dev_name_ha, char * sens_name, char * unique_id, String entity_settings)
+String make_discover(String dev_type_, String dev_name_, String dev_name_ha, String sens_name, String unique_id, String entity_settings)
 {
 String md = (String)"{\"avty\":{\"topic\":\"avshrs/devices/" + (String)dev_name_ ;
 md += (String)"/status/connected\",\"payload_available\":\"true\",\"payload_not_available\":\"false\"},\"~\":\"avshrs/devices/"+(String)dev_name_+"\",";
@@ -136,4 +136,12 @@ void setup_wifi()
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
+}
+void wifi_fast_reconnect() 
+{
+    if(WiFi.status() != WL_CONNECTED)
+    {
+    WiFi.disconnect();
+    WiFi.reconnect();
+    }
 }
